@@ -12,5 +12,3 @@ class Board
     @@board.each { |r| p r }
   end
 end
-
-Board.generate_board
