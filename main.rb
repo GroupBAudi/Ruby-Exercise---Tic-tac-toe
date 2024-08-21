@@ -14,30 +14,19 @@ require_relative "lib/player"
 # Row 1 Tile 1 is now "O"
 
 class Player_One < Player
-  @@score = 0
-  @@mark = "X"
-
-  def add_score
-    @@score += 1
-  end
-
-  def add_mark (row, col, mark=@@mark)
-    Board.modify_board(row, col, mark)
+  def initialize(name)
+    @name = name
+    @mark = "X"
+    @score = 0
   end
 end
 
 class Player_Two < Player
-  @@score = 0
-  @@mark = "O"
-
-  def add_score
-    @@score += 1
+  def initialize(name)
+    @name = name
+    @mark = "O"
+    @score = 0
   end
-
-  def add_mark (row, col, mark=@@mark)
-    Board.modify_board(row, col, mark)
-  end
-
 end
 
 # Generate Board to play
@@ -48,7 +37,10 @@ one = Player_One.new("Nicholas")
 two = Player_Two.new("PP")
 
 # For ease of non user, simply put 1 for first row, 2 for 2nd tile
-two.add_mark(1, 2)
-one.add_mark(1, 3)
 
-Board.print
+one.add_score
+one.print_score
+# one.add_mark(1, 3)
+# two.add_mark(1, 2) # works
+
+# Board.print
