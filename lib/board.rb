@@ -11,6 +11,10 @@ class Board
     end
   end
 
+  def self.clear
+    @@board = []
+  end
+
   def self.print
     @@board.each { |r| p r } # prints the board
   end
