@@ -3,13 +3,13 @@ class Player
   attr_accessor :score
 
   def add_mark (row, col, mark = self.mark) # default argument of mark is either p1's or p2's mark
-    Board.modify_board(row, col, mark) # board doesn't need to check whether its p1 or p2
+    Board.modify_board(row, col, mark)
   end
 
   # below are for debugging I think
 
   def what_is_self?
-    puts "#{self.class.name}" # Prints out Class Name
+    p "#{self.class.name}" # Prints out Class Name
   end
 
   def what_mark
@@ -25,7 +25,7 @@ class Player
   end
 
   def add_score
-    self.score += 1
+    p self.score += 1
   end
 
   def print_score

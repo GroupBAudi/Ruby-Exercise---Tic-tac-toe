@@ -1,18 +1,6 @@
 require_relative "lib/board"
 require_relative "lib/player"
 
-# make function called game
-# each game consists of turn, starting from player one
-# player one takes turn by taking input from 1 to 9, board printed
-# player two takes turn by taking input from 1 to 9, board printed, can't change player one mark
-# and so on
-# win by checking if their mark are three in a row i.e. [X, X, X]
-
-# player one choose tile. i.e. Row 1, tile 3
-# Row 1 Tile 3 is now "X"
-# player two choose tile. i.e. Row 1, tile 1
-# Row 1 Tile 1 is now "O"
-
 class Player_One < Player
   def initialize(name)
     @name = name
@@ -31,16 +19,40 @@ end
 
 # Generate Board to play
 Board.generate
-Board.print
 
 one = Player_One.new("Nicholas")
 two = Player_Two.new("PP")
 
-# For ease of non user, simply put 1 for first row, 2 for 2nd tile
+# make function called game
+# each game consists of turn, starting from player one
+# player one takes turn by taking input from 1 to 9, board printed
+# player two takes turn by taking input from 1 to 9, board printed, can't change player one mark
+# and so on
+# win by checking if their mark are three in a row i.e. [X, X, X]
 
-one.add_score
-one.print_score
-# one.add_mark(1, 3)
-# two.add_mark(1, 2) # works
+one.add_mark(1,2)
+two.add_mark(1,3)
 
-# Board.print
+# one.print_tiles
+two.print_tiles
+
+def game
+
+end
+
+
+# imagine arr = [[1,2], [1,3], [1,2]]
+# if we input some array 'coordinates'. we check it if it has a duplicate coordinates within arr
+# if yes, do not modify the board, and give a slap on the wrist
+# if no, allow input
+
+# Below removes duplicate coordinates
+
+def test
+  arr = [[1,2], [1,3], [1,2]]
+  hash = arr.tally
+  hash.each  { |key, value| arr.uniq! if value > 1 }
+  p arr
+end
+
+# test
