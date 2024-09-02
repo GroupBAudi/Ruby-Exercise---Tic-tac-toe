@@ -1,58 +1,106 @@
-require_relative "lib/board"
-require_relative "lib/player"
+require_relative 'lib/board'
+require_relative 'lib/player'
 
-class Player_One < Player
+class PlayerOne < Player
   def initialize(name)
-    @name = name
-    @mark = "X"
-    @score = 0
+    super
+    @mark = 'X'
   end
 end
 
-class Player_Two < Player
+class PlayerTwo < Player
   def initialize(name)
-    @name = name
-    @mark = "O"
-    @score = 0
+    super
+    @mark = 'O'
   end
 end
 
 # Generate Board to play
 Board.generate
 
-one = Player_One.new("Nicholas")
-two = Player_Two.new("PP")
+def win_tiles
+  tiles = [
+  [[1,1], [1,2], [1,3]],
+  [[2,1], [2,2], [2,3]],
+  [[3,1], [3,2], [3,3]],
 
-# make function called game
-# each game consists of turn, starting from player one
-# player one takes turn by taking input from 1 to 9, board printed
-# player two takes turn by taking input from 1 to 9, board printed, can't change player one mark
-# and so on
-# win by checking if their mark are three in a row i.e. [X, X, X]
-
-one.add_mark(1,2)
-two.add_mark(1,3)
-
-# one.print_tiles
-two.print_tiles
-
-def game
-
+  [[1,1], [2,1], [3,1]],
+  [[2,1], [2,2], [2,3]],
+  [[1,3], [2,3], [3,3]],
+  
+  [[1,1], [2,2], [3,3]],
+  [[1,3], [2,2], [3,1]]
+]
 end
 
+def check_has_tiles?(win=win_tiles, player)
+  win.each do |x|
+    correct_tiles = 0
+    player.tiles.each do |y|
+      correct_tiles+=1 if x.include?(y)
+      return true if correct_tiles == 3
+    end
+  end
+end
 
-# imagine arr = [[1,2], [1,3], [1,2]]
-# if we input some array 'coordinates'. we check it if it has a duplicate coordinates within arr
-# if yes, do not modify the board, and give a slap on the wrist
-# if no, allow input
+def game
+  player_one = PlayerOne.new('Player One')
+  player_two = PlayerTwo.new('Player Two')
 
-# Below removes duplicate coordinates
+  tiles = []
+  win = false
+  turn = true
 
-def test
+  while win != true
+    Board.print
+    puts 'Which row? '
+    row =  gets.chomp.to_i
+    puts  'Which column?'
+    col =  gets.chomp.to_i
+
+    if (row < 4 && row > 0) && (col < 4 && col > 0)
+      if turn
+        player_one.add_mark(row, col)
+        player_one.tiles.push([row, col])
+        check_has_tiles?(player_one) if player_one.tiles.length >= 3
+        win = true if check_has_tiles?(player_one) == true
+        turn = false
+        puts "It's #{player_two.name}'s turn now!"
+      else
+        player_two.add_mark(row, col)
+        player_two.tiles.push([row, col])
+        turn = true
+        puts "It's #{player_one.name}'s turn now!"
+      end
+    else
+      puts "Can't enter "
+    end
+    tiles.push(row, col)
+  end
+end
+
+game
+
+def test(win=win_tiles, arr)
+  win.each do |x|
+    correct_tiles = 0
+    arr.each do |y|
+      correct_tiles+=1 if x.include?(y)
+      correct_tiles
+      return true if correct_tiles == 3
+    end
+  end
+end
+
+arr = [[1,1],[2,2],[3,3]]
+
+# p test(arr)
+
+                                                                                                                                                                                                                                                                                                                                          
+
+def test2
   arr = [[1,2], [1,3], [1,2]]
   hash = arr.tally
   hash.each  { |key, value| arr.uniq! if value > 1 }
   p arr
 end
-
-# test

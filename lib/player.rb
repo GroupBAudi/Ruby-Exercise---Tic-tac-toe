@@ -1,6 +1,12 @@
 class Player
-  attr_reader :mark
-  attr_accessor :score
+  attr_reader :mark, :name
+  attr_accessor :score, :tiles
+
+  def initialize(name)
+    @name = name
+    @score = 0
+    @tiles = []
+  end
 
   def add_mark (row, col, mark = self.mark) # default argument of mark is either p1's or p2's mark
     Board.modify_board(row, col, mark)
@@ -14,10 +20,6 @@ class Player
 
   def what_mark
     p self.mark
-  end
-
-  def what_is_my_name
-    p self.name
   end
   
   def what_mark

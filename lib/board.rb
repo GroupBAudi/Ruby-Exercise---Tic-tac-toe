@@ -24,3 +24,4 @@ class Board
     # p "#{mark}"
   end
 end
+
