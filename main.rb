@@ -49,9 +49,11 @@ def game
 
   tiles = []
   win = false
-  turn = true
+  turn = false
 
   while win != true
+    puts "It's #{player_one.name}'s turn now!" if turn == false
+    puts "It's #{player_two.name}'s turn now!" if turn == true
     Board.print
     puts 'Which row? '
     row =  gets.chomp.to_i
@@ -59,18 +61,20 @@ def game
     col =  gets.chomp.to_i
 
     if (row < 4 && row > 0) && (col < 4 && col > 0)
-      if turn
+      if turn == false
         player_one.add_mark(row, col)
         player_one.tiles.push([row, col])
         check_has_tiles?(player_one) if player_one.tiles.length >= 3
         win = true if check_has_tiles?(player_one) == true
-        turn = false
-        puts "It's #{player_two.name}'s turn now!"
+        puts "#{player_one.name} wins!" if check_has_tiles?(player_one) == true
+        turn = true
       else
         player_two.add_mark(row, col)
         player_two.tiles.push([row, col])
-        turn = true
-        puts "It's #{player_one.name}'s turn now!"
+        check_has_tiles?(player_two) if player_two.tiles.length >= 3
+        win = true if check_has_tiles?(player_two) == true
+        puts "#{player_two.name} wins!" if check_has_tiles?(player_two) == true
+        turn = false
       end
     else
       puts "Can't enter "
