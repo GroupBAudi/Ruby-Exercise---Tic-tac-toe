@@ -27,8 +27,17 @@ class Game
   end
 
   def add_tiles(player, row, col)
-    player.add_mark(row, col)
-    player.tiles.push([row, col])
+    if @tiles.include?([row, col])
+      puts "Tile's taken. Take another tile."
+    else
+      player.add_mark(row, col)
+      @tiles.push([row, col])
+      if !@turn
+        @turn = true
+      else
+        @turn = false
+      end
+    end
   end
 
   def check_has_tiles?(win=Board.win_tiles, player)
@@ -44,6 +53,7 @@ class Game
   def start_game
     Board.generate
     while !self.win
+
       puts "It's #{player_one.name}'s turn now!" if @turn == false
       puts "It's #{player_two.name}'s turn now!" if @turn == true
       Board.print
@@ -53,14 +63,9 @@ class Game
       col =  gets.chomp.to_i
       if (row < 4 && row > 0) && (col < 4 && col > 0)
         if !@turn
-          # add tiles
-          # check if he win
           add_tiles(player_one, row, col)
-          @turn = true
         else
-          # add tiles
           add_tiles(player_two, row, col)
-          @turn = false
         end
       end
       if player_one.tiles.length >= 3 || player_two.tiles.length >= 3
@@ -70,14 +75,10 @@ class Game
       end
     end
   end
-
-  def test
-    p Board.win_tiles[0]
-  end
 end
 
 player_one = PlayerOne.new("Ambatukam")
 player_two = PlayerTwo.new("Omaygot")
 
 game = Game.new(player_one, player_two)
-game.start_game
+game.start_game 
