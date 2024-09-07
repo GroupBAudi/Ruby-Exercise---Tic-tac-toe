@@ -36,7 +36,6 @@ class Board
 
   def self.modify_board(row, col, mark)
     @@board[row - 1][col - 1] = mark
-    # p "#{mark}"
   end
 end
 
