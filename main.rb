@@ -45,14 +45,14 @@ class Game
       correct_tiles = 0
       player.tiles.each do |y|
         correct_tiles +=1 if x.include?(y)
-        return true if correct_tiles == 3
+        player.win = true if correct_tiles == 3
       end
     end
   end
 
   def start_game
     Board.generate
-    until self.win
+    until player_one.win == true || player_two.win == true
       puts "It's #{player_one.name}'s turn now!" if @turn == false
       puts "It's #{player_two.name}'s turn now!" if @turn == true
       Board.print
@@ -67,12 +67,16 @@ class Game
           add_tiles(player_two, row, col)
         end
       end
-      if player_one.tiles.length >= 3
-        puts "#{player_one.name} wins" if check_has_tiles?(player_one) == true
-        puts "#{player_two.name} wins" if check_has_tiles?(player_two) == true
-        self.win = true if check_has_tiles?(player_one) == true || check_has_tiles?(player_two) == true
-      end
+      check_has_tiles?(player_one)
+      check_has_tiles?(player_two)
+
+      puts "#{player_one.name} wins!" if player_one.win == true
+      puts "#{player_two.name} wins!" if player_two.win == true
     end
+  end
+
+  def test
+    p player_one.win
   end
 end
 
@@ -81,3 +85,4 @@ player_two = PlayerTwo.new('Player Two')
 
 game = Game.new(player_one, player_two)
 game.start_game
+# game.test
