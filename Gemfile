@@ -4,4 +4,4 @@ source "https://rubygems.org"
 
 # gem "rails"
 
-gem "colorize", "~> 1.1"
+gem "rainbow", "~> 3.1"

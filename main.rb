@@ -1,17 +1,19 @@
 require_relative 'lib/board'
 require_relative 'lib/player'
+require 'bundler/setup'
+require 'rainbow'
 
 class PlayerOne < Player
   def initialize(name)
     super
-    @mark = 'X'
+    @mark = Rainbow('X').red
   end
 end
 
 class PlayerTwo < Player
   def initialize(name)
     super
-    @mark = 'O'
+    @mark = Rainbow('O').blue
   end
 end
 
@@ -26,17 +28,13 @@ class Game
     @turn = false
   end
 
-  def add_tiles(player, row, col)
-    if @tiles.include?([row, col])
+  def take_tile(player, number)
+    if @tiles.include?(number)
       puts "Tile's taken. Take another tile."
     else
-      player.add_mark(row, col)
-      @tiles.push([row, col])
-      if !@turn
-        @turn = true
-      else
-        @turn = false
-      end
+      player.add_mark(number)
+      @tiles.push(number)
+      if !@turn then @turn = true else @turn = false end
     end
   end
 
@@ -50,33 +48,36 @@ class Game
     end
   end
 
-  def start_game
-    Board.generate
-    until player_one.win == true || player_two.win == true
-      puts "It's #{player_one.name}'s turn now!" if @turn == false
-      puts "It's #{player_two.name}'s turn now!" if @turn == true
-      Board.print
-      puts 'Which row?'
-      row = gets.chomp.to_i
-      puts 'Which column?'
-      col = gets.chomp.to_i
-      if (row < 4 && row > 0) && (col < 4 && col > 0)
-        if !@turn
-          add_tiles(player_one, row, col)
-        else
-          add_tiles(player_two, row, col)
-        end
-      end
-      check_has_tiles?(player_one)
-      check_has_tiles?(player_two)
-
-      puts "#{player_one.name} wins!" if player_one.win == true
-      puts "#{player_two.name} wins!" if player_two.win == true
-    end
+  def reset_game
+    Board.clear
+    @tiles = []
+    player_one.clear_taken_tiles
+    player_two.clear_taken_tiles
+    @turn = false
+    puts "Draw! Game was reset"
   end
 
-  def test
-    p player_one.win
+  def start_game
+    Board.generate
+    until player_one.win || player_two.win
+      puts "It's #{player_one.name}'s turn now!" if @turn == false
+      puts "It's #{player_two.name}'s turn now!" if @turn == true
+      Board.print_self
+      puts 'Which tile?'
+      i = gets.chomp.to_i
+      if !@turn
+        take_tile(player_one, i)
+      else
+        take_tile(player_two, i)
+      end
+      
+      check_has_tiles?(player_one)
+      check_has_tiles?(player_two) 
+   
+      puts "#{player_one.name} wins!" if player_one.win == true
+      puts "#{player_two.name} wins!" if player_two.win == true
+      reset_game if self.tiles.length > 8
+    end
   end
 end
 
@@ -85,4 +86,3 @@ player_two = PlayerTwo.new('Player Two')
 
 game = Game.new(player_one, player_two)
 game.start_game
-# game.test

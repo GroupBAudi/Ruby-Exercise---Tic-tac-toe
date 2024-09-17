@@ -10,8 +10,12 @@ class Player
     @correct_tiles = 0
   end
 
-  def add_mark (row, col, mark = self.mark) # default argument of mark is either p1's or p2's mark
-    self.tiles.push([row, col])
-    Board.modify_board(row, col, mark)
+  def add_mark (number, mark = self.mark) # default argument of mark is either p1's or p2's mark
+    self.tiles.push(number)
+    Board.modify_board(number, mark)
+  end
+
+  def clear_taken_tiles
+    self.tiles = []
   end
 end
