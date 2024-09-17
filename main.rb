@@ -48,13 +48,26 @@ class Game
     end
   end
 
-  def reset_game
+  def reset_board
     Board.clear
     @tiles = []
     player_one.clear_taken_tiles
     player_two.clear_taken_tiles
     @turn = false
-    puts "Draw! Game was reset"
+  end
+
+  def restart_game
+    if player_one.win == true
+      player_one.score += 1
+      player_one.win = false
+    elsif player_two.win == true
+      player_two.score += 1
+      player_two.win = false
+    end
+    puts "#{player_one.name}'s score = #{player_one.score}"
+    puts "#{player_two.name}'s score = #{player_two.score}"
+    reset_board
+    start_game
   end
 
   def start_game
@@ -76,9 +89,17 @@ class Game
    
       puts "#{player_one.name} wins!" if player_one.win == true
       puts "#{player_two.name} wins!" if player_two.win == true
-      reset_game if self.tiles.length > 8
+      if self.tiles.length > 8 && (!player_one.win || !player_two.win) 
+        puts "Draw!"
+        reset_board
+        Board.generate
+      end
     end
+    puts "Game has ended. Retry? (y/n lowercase only)"
+    reset_prompt = gets.chomp
+    restart_game if reset_prompt == "y"
   end
+  
 end
 
 player_one = PlayerOne.new('Player One')

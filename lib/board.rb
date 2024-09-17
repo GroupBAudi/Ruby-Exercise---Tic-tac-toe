@@ -23,7 +23,6 @@ class Board
 
   def self.clear
     @@board = []
-    self.generate
   end
 
   def self.print_self
